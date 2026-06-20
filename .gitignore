@@ -1,0 +1,11 @@
+# Bazel outputs
+bazel-*
+
+# Editor / OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Local build artifacts
+build/
+*.log

@@ -1,0 +1,7 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "eigen3",
+    hdrs = glob(["include/eigen3/**/*"]),
+    includes = ["include/eigen3"],
+)

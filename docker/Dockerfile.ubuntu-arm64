@@ -1,0 +1,43 @@
+FROM arm64v8/ubuntu:20.04
+
+ENV LANG=C.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
+
+ARG user_name=developer
+ARG user_id=1000
+ARG workspace_path=/workspace
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    build-essential \
+    ca-certificates \
+    cmake \
+    curl \
+    gdb \
+    git \
+    gnupg \
+    htop \
+    libatlas-base-dev \
+    libceres-dev \
+    libeigen3-dev \
+    libgflags-dev \
+    libgoogle-glog-dev \
+    libopencv-dev \
+    libsuitesparse-dev \
+    sudo \
+    unzip \
+    vim \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -O /usr/local/bin/bazel \
+    https://github.com/bazelbuild/bazel/releases/download/6.4.0/bazel-6.4.0-linux-arm64 \
+    && chmod +x /usr/local/bin/bazel
+
+RUN mkdir -p "${workspace_path}" && \
+    useradd -u "${user_id}" -m -s /bin/bash "${user_name}" && \
+    usermod -aG sudo "${user_name}" && \
+    echo "${user_name} ALL=(ALL:ALL) NOPASSWD:ALL" > "/etc/sudoers.d/${user_name}"
+
+WORKDIR ${workspace_path}
+USER ${user_name}
